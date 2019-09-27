@@ -1,15 +1,17 @@
 
 
 class DockingStation
-  attr_reader :bikes, :capacity
+  attr_reader :bikes #, :capacity
+
+  DEFAULT_CAPACITY = 20
 
   def initialize
     @bikes = []
-    @capacity = 20
+    # @capacity = 20
   end
 
   def release_bike
-    if bikes.count > 0
+    if !(bikes.empty?)
       bikes.slice(0)
       bikes.delete_at(0)
     else
@@ -18,10 +20,10 @@ class DockingStation
   end
 
   def add_bike(bike)
-    if bikes.full?
-      bikes << bike
-    else
+    if full?
       fail
+    else
+      bikes << bike
     end
   end
 
@@ -29,9 +31,10 @@ class DockingStation
     bikes
   end
 
+  private
+
   def full?
-    return false if self == nil
-    self.count == capacity ? true : false
+    bikes.count >= DEFAULT_CAPACITY
   end
 
 end
@@ -55,3 +58,4 @@ docking_station = DockingStation.new
 # 20.times {docking_station.add_bike(Bike.new)}
 # puts docking_station.list_of_bikes
 # docking_station.add_bike(Bike.new)
+# docking_station.full?

@@ -31,7 +31,7 @@ end
 it 'doe not release bikes when none are available' do
   docking_station = DockingStation.new
   bike = Bike.new
-  20.times {docking_station.add_bike(Bike.new)}
+  DockingStation::DEFAULT_CAPACITY.times {docking_station.add_bike(Bike.new)}
   expect { raise docking_station.add_bike(bike)}.to raise_error
 end
 
