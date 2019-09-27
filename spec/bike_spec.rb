@@ -1,5 +1,5 @@
 require 'borisbikes'
-require 'bike'
+
 
 describe Bike do
 
