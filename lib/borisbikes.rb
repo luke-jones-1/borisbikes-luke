@@ -1,7 +1,8 @@
 
 
 class DockingStation
-  attr_reader :bikes, :capacity
+  attr_reader :bikes
+  attr_accessor :capacity
 
   DEFAULT_CAPACITY = 20
 
@@ -11,23 +12,15 @@ class DockingStation
   end
 
   def release_bike
-    if !(bikes.empty?)
-      bikes.slice(0)
-      bikes.delete_at(0)
-    else
-      fail
-    end
+    fail 'No bikes available' if empty?
+    bike = bikes.pop
+    fail 'Bike is broken' if bike.broken?
+    bike
   end
 
-  def dock_bike(bike, status='working')
-    if status != 'working'
-      bike.broken
-    end
-    if full?
-      fail
-    else
-      bikes << bike
-    end
+  def dock(bike)
+    fail 'Docking station full' if full?
+    bikes << bike
   end
 
   def list_of_bikes()
@@ -40,32 +33,40 @@ class DockingStation
     bikes.count >= capacity
   end
 
+  def empty?
+    bikes.empty?
+  end
+
 end
 
 class Bike
-  attr_accessor :status
+  attr_accessor :broken
 
-  def initialize(status='working')
-    @status = status
+  def initialize(broken=false)
+    @broken = broken
   end
 
   def working?
-    status == 'working'
+    working = !(broken?)
   end
 
-  def broken
-    status = 'broken'
+  def broken?
+    broken
+  end
+
+  def report_broken
+    broken = true
   end
 end
 
-# docking_station = DockingStation.new
-# bike = docking_station.release_bike
-# docking_station.release_bike
+#bike = Bike.new(true)
+#docking_station.dock(bike)
+#docking_station.release_bike
 # p docking_station.list_of_bikes
 # p bike
-# docking_station.dock_bike(bike)
+# docking_station.dock(bike)
 # p docking_station.list_of_bikes
-# 20.times {docking_station.dock_bike(Bike.new)}
+# 20.times {docking_station.dock(Bike.new)}
 # puts docking_station.list_of_bikes
-# docking_station.dock_bike(Bike.new)
+# docking_station.dock(Bike.new)
 # docking_station.full?
