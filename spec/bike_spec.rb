@@ -8,7 +8,7 @@ it 'checks if bike is working' do
 end
 
 it 'should return broken' do
-  bike = Bike.new(true)
+  bike = described_class.new(true)
   status = bike.broken?
   expect(status).to eq(true)
 end

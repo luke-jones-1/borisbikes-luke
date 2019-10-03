@@ -84,30 +84,32 @@ class Garage
   end
 
   def store(van_bikes)
-    stored << van_bikes
+    @stored << van_bikes
   end
 
   def repair
-    stored.map { |bike| bike.report_working }
+    @stored.map { |bike| bike.report_working }
   end
 
   def release
-    return repair
-    stored = []
+    temp = repair
+    @stored = []
+    return temp
   end
 
 end
 
 class Van
 
-  attr_reader :van
+  attr_accessor :van
 
   def initialize
     @van = []
   end
 
   def collect_broken(docking_station)
-    input = docking_station.broken_bikes_to_be_fixed
+    input = []
+    input << docking_station.broken_bikes_to_be_fixed
     input.each { |bike| @van << bike}
     van
     end
@@ -118,8 +120,10 @@ class Van
   end
 
   def collect_working(garage)
-    garage = garage.release
-    garage.each { |bike| @van << bike }
+    arr = []
+    arr << garage.release
+    arr.each { |bike| @van << bike }
+    garage
   end
 
   def distribute(docking_station)
